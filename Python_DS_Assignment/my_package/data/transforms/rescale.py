@@ -1,4 +1,11 @@
 #Imports
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import ndimage, misc
+import imread,imresize
+from PIL import Image
+
+
 
 
 class RescaleImage(object):
@@ -15,6 +22,8 @@ class RescaleImage(object):
         '''
 
         # Write your code here
+        self.output_size=output_size
+
 
     def __call__(self, image):
         '''
@@ -28,3 +37,6 @@ class RescaleImage(object):
         '''
 
         # Write your code here
+        img = numpy.array(image)
+        return pil_im.resize(self.output_size)
+

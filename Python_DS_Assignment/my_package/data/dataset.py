@@ -1,4 +1,11 @@
 #Imports
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import ndimage, misc
+import imread,imresize
+from PIL import Image
+
+
 
 
 class Dataset(object):
@@ -13,6 +20,8 @@ class Dataset(object):
             transforms: list of transforms (class instances)
                         For instance, [<class 'RandomCrop'>, <class 'Rotate'>]
         '''
+        self.annotation_file=annotation_file
+        self.transforms=transforms
         
         
 
@@ -20,6 +29,8 @@ class Dataset(object):
         '''
             return the number of data points in the dataset
         '''
+        return len(self.annotation_file)
+        
         
 
     def __getitem__(self, idx):
@@ -44,5 +55,21 @@ class Dataset(object):
             4. Perform the desired transformations on the image.
             5. Return the dictionary of the transformed image and annotations as specified.
         '''
+        image = numpy.array(imread(self.annotation_file[idx][img_fn]))
+        image = image.transpose(2,1,0)
 
+        gt_png_ann = numpy.array(imread(self.annotation_file[idx][png_ann_fn]))
+        gt_png_ann = np.expand_dims(gt_png_ann, axis=0)
+
+        gt_png_ann = gt_png_ann/255.
+        image = image/255.
+
+        for trans in self.transforms :
+            image = trans(image)
+            gt_png_ann = trans(gt_png_ann)
+
+        return {{"img_fn": image, "png_ann_fn":gt_png_ann ,"bboxes": [{"bbox": [189.82, 111.18, 72.06, 67.41],"category": "tv","category_id": 72}, {"bbox": [4.19, 148.57, 150.17, 178.69],"category": "chair","category_id": 62}, {"bbox": [201.58, 198.92, 296.3, 176.08],"category": "couch","category_id": 63}, {"bbox": [0.0, 235.0, 500.0, 140.0],"category": "carpet","category_id": 101}, {"bbox": [145.0, 167.0, 153.0, 82.0],"category": "shelf","category_id": 156}, {"bbox": [0.0, 0.0, 255.0, 257.0],"category": "wall-concrete","category_id": 172}, {"bbox": [249.0, 0.0, 251.0, 341.0],"category": "wall-other","category_id": 173}, {"bbox": [4.0, 111.0, 494.0, 264.0],"category": "stuff-other","category_id": 183}]}}
+
+
+         
         

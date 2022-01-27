@@ -1,4 +1,5 @@
 #Imports
+from types import DynamicClassAttribute
 from my_package.model import InstanceSegmentationModel
 from my_package.data import Dataset
 from my_package.analysis import plot_visualization
@@ -18,17 +19,17 @@ def experiment(annotation_file, segmentor, transforms, outputs):
     '''
 
     #Create the instance of the dataset.
+    dataset = Dataset(annotation_file, transforms)
 
 
-    #Iterate over all data items.
+    #Iterate over all data item
 
-
+    for data in dataset :
+        inp = data[img_fn]  
     #Get the predictions from the segmentor.
-
-
+        pred_boxes, pred_mask, pred_class, pred_score = segmentor(inp)
     #Draw the segmentation maps on the image and save them.
-
-
+        plot_visualization(pred_boxes,pred_mask)
     #Do the required analysis experiments.
     
 

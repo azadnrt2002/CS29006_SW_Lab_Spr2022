@@ -1,4 +1,10 @@
 #Imports
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.misc 
+from PIL import Image, ImageFilter
+import imread,imresize
+
 
 
 class BlurImage(object):
@@ -13,6 +19,8 @@ class BlurImage(object):
         '''
 
         # Write your code here
+        self.radius=radius
+
         
 
     def __call__(self, image):
@@ -25,5 +33,8 @@ class BlurImage(object):
         '''
 
         # Write your code here
+        img=numpy.array(image)
+        return img.filter(ImageFilter.GaussianBlur(radius = self.radius))
+
         
 

@@ -1,4 +1,9 @@
 #Imports
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import ndimage, misc
+import imread,imresize
+
 
 
 class RotateImage(object):
@@ -10,17 +15,22 @@ class RotateImage(object):
         '''
             Arguments:
             degrees: rotation degree.
+
         '''
+
         
         # Write your code here
+        self.degrees=degrees
 
     def __call__(self, sample):
         '''
             Arguments:
-            image (numpy array or PIL image)
+            image(sample) (numpy array or PIL image)
 
             Returns:
             image (numpy array or PIL image)
         '''
 
         # Write your code here
+        img = numpy.array(sample)
+        return scipy.ndimage.rotate(img,self.degrees)
